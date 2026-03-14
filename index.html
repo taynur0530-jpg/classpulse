@@ -89,13 +89,18 @@ textarea.qi::placeholder{color:var(--ink3);}
 .rpanel{padding:28px 32px;overflow-y:auto;}
 .psec{margin-bottom:32px;}
 .ptitle{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:block;}
-.mbar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;display:flex;gap:2px;margin-bottom:12px;}
-.mseg{height:100%;transition:width .5s ease;border-radius:4px;}
-.mrows{display:flex;flex-direction:column;gap:8px;}
-.mrow{display:flex;justify-content:space-between;align-items:center;}
-.mleft{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);}
-.mdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.mval{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--ink);}
+.pulse-score-wrap{text-align:center;padding:8px 0 20px;}
+.pulse-score-num{font-family:'Lora',serif;font-size:56px;font-weight:600;line-height:1;transition:color .5s,opacity .3s;}
+.pulse-score-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;transition:color .5s;}
+.pulse-emoji{font-size:28px;margin-bottom:4px;display:block;}
+.pulse-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:4px;}
+.pulse-bar-row{display:flex;align-items:center;gap:10px;}
+.pulse-bar-label{font-size:12px;color:var(--ink2);width:62px;flex-shrink:0;}
+.pulse-bar-track{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden;}
+.pulse-bar-fill{height:100%;border-radius:3px;transition:width .5s ease;}
+.pulse-bar-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);width:32px;text-align:right;flex-shrink:0;}
+/* legacy — keep for JS compat */
+.mbar{display:none;}.mseg{}.mrows{display:none;}.mrow{}.mleft{}.mdot{}.mval{}
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;}
 .stile{background:var(--bg);border-radius:8px;padding:14px 16px;}
 .sn{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--ink);display:block;margin-bottom:2px;}
@@ -128,6 +133,16 @@ textarea.qi::placeholder{color:var(--ink3);}
 .qg-sub{font-size:12px;color:var(--ink3);margin-top:6px;}
 .empty-st{text-align:center;padding:48px 24px;color:var(--ink3);font-size:13px;}
 .empty-ic{font-size:32px;margin-bottom:10px;opacity:.4;}
+/* Trend chart */
+.trend-wrap{margin-top:4px;}
+.trend-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.trend-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);}
+.trend-legend{display:flex;gap:10px;}
+.trend-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink3);}
+.trend-leg-dot{width:6px;height:6px;border-radius:50%;}
+.trend-canvas-wrap{position:relative;width:100%;height:90px;background:var(--bg);border-radius:8px;overflow:hidden;}
+canvas#trend-canvas{width:100%;height:100%;display:block;}
+.trend-empty{font-size:11px;color:var(--ink3);text-align:center;padding:32px 0;font-style:italic;}
 .div{height:1px;background:var(--line);margin:28px 0;}
 </style>
 </head>
@@ -200,15 +215,46 @@ textarea.qi::placeholder{color:var(--ink3);}
     <div class="lpanel">
       <div class="psec">
         <span class="ptitle">Class Understanding</span>
-        <div class="mbar">
-          <div class="mseg" id="mg" style="background:var(--green);width:0%"></div>
-          <div class="mseg" id="mp" style="background:var(--amber);width:0%"></div>
-          <div class="mseg" id="ml" style="background:var(--red);width:0%"></div>
+        <div class="pulse-score-wrap">
+          <span class="pulse-emoji" id="pulse-emoji">—</span>
+          <div class="pulse-score-num" id="pulse-score">—</div>
+          <div class="pulse-score-label" id="pulse-label">Waiting for responses</div>
         </div>
-        <div class="mrows">
-          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--green)"></div>Got it</div><div class="mval" id="vg">—</div></div>
-          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--amber)"></div>Partially</div><div class="mval" id="vp">—</div></div>
-          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--red)"></div>Lost</div><div class="mval" id="vl">—</div></div>
+        <div class="pulse-bars">
+          <div class="pulse-bar-row">
+            <div class="pulse-bar-label">✅ Got it</div>
+            <div class="pulse-bar-track"><div class="pulse-bar-fill" id="vg-bar" style="width:0%;background:var(--green)"></div></div>
+            <div class="pulse-bar-val" id="vg">—</div>
+          </div>
+          <div class="pulse-bar-row">
+            <div class="pulse-bar-label">🤔 Partially</div>
+            <div class="pulse-bar-track"><div class="pulse-bar-fill" id="vp-bar" style="width:0%;background:var(--amber)"></div></div>
+            <div class="pulse-bar-val" id="vp">—</div>
+          </div>
+          <div class="pulse-bar-row">
+            <div class="pulse-bar-label">😵 Lost</div>
+            <div class="pulse-bar-track"><div class="pulse-bar-fill" id="vl-bar" style="width:0%;background:var(--red)"></div></div>
+            <div class="pulse-bar-val" id="vl">—</div>
+          </div>
+        </div>
+        <!-- hidden legacy els for JS compat -->
+        <div style="display:none">
+          <div id="mg"></div><div id="mp"></div><div id="ml"></div>
+        </div>
+        <!-- Trend chart -->
+        <div class="trend-wrap">
+          <div class="trend-header">
+            <span class="trend-title">Trend over time</span>
+            <div class="trend-legend">
+              <div class="trend-leg-item"><div class="trend-leg-dot" style="background:var(--green)"></div>Got it</div>
+              <div class="trend-leg-item"><div class="trend-leg-dot" style="background:var(--amber)"></div>Partial</div>
+              <div class="trend-leg-item"><div class="trend-leg-dot" style="background:var(--red)"></div>Lost</div>
+            </div>
+          </div>
+          <div class="trend-canvas-wrap">
+            <canvas id="trend-canvas"></canvas>
+            <div class="trend-empty" id="trend-empty">Submit more responses to see the trend</div>
+          </div>
         </div>
       </div>
 
@@ -225,12 +271,13 @@ textarea.qi::placeholder{color:var(--ink3);}
         <span id="aibtntxt">Generate AI Insight</span>
       </button>
       <div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:8px;line-height:1.6;">Groups questions · rates understanding<br>suggests what to re-explain · recommends action</div>
+      <button onclick="clearSession()" style="width:100%;margin-top:10px;height:34px;background:transparent;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink3);cursor:pointer;font-family:'Inter',sans-serif;">🗑 Clear all responses</button>
     </div>
 
     <div class="rpanel">
       <div class="rtitle">
         <span>AI Insight</span>
-        <span style="font-size:11px;color:var(--ink3);font-weight:400;text-transform:none;letter-spacing:0;">Powered by Claude</span>
+        
       </div>
       <div class="ai-box">
         <div class="ai-head">
@@ -259,10 +306,30 @@ textarea.qi::placeholder{color:var(--ink3);}
 </div>
 
 <script>
-const DB = { subs: [] };
+// ── Persistent storage via localStorage ──
+const STORAGE_KEY = 'classpulse_subs';
+const DB = {
+  get subs() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch(e) { return []; }
+  },
+  push(item) {
+    const arr = this.subs;
+    arr.push(item);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  },
+  clear() { localStorage.removeItem(STORAGE_KEY); }
+};
 let uPick = null;
 
 function enter(role) {
+  if (role === 'professor') {
+    const pwd = prompt('Enter professor password:');
+    if (pwd !== '2026') {
+      if (pwd !== null) alert('Incorrect password. Access denied.');
+      return;
+    }
+  }
   document.getElementById('role-screen').style.display = 'none';
   document.getElementById(role+'-app').classList.add('active');
   if (role === 'professor') refreshDash();
@@ -281,7 +348,7 @@ function pickU(el, val, cls) {
 function submitStudent() {
   const q = document.getElementById('qi').value.trim();
   if (!uPick && !q) { document.getElementById('qi').focus(); return; }
-  DB.subs.push({ u: uPick || 'partial', q, ts: Date.now() });
+  DB.push({ u: uPick || 'partial', q, ts: Date.now() });
   const btn = document.getElementById('sbtn');
   const toast = document.getElementById('toast');
   btn.disabled = true; btn.textContent = 'Sent ✓';
@@ -303,6 +370,94 @@ function submitStudent() {
   }, 2800);
 }
 
+// ── Trend data: snapshot every time refreshDash runs with data ──
+const TREND_KEY = 'classpulse_trend';
+function getTrend() {
+  try { return JSON.parse(localStorage.getItem(TREND_KEY) || '[]'); } catch(e) { return []; }
+}
+function saveTrend(snap) {
+  const arr = getTrend();
+  // Only save if last snapshot was >30s ago
+  if (arr.length && Date.now() - arr[arr.length-1].ts < 30000) {
+    arr[arr.length-1] = snap; // update last point
+  } else {
+    arr.push(snap);
+  }
+  // Keep last 20 points
+  if (arr.length > 20) arr.splice(0, arr.length - 20);
+  localStorage.setItem(TREND_KEY, JSON.stringify(arr));
+}
+function clearTrend() { localStorage.removeItem(TREND_KEY); }
+
+function drawTrend() {
+  const canvas = document.getElementById('trend-canvas');
+  const emptyEl = document.getElementById('trend-empty');
+  if (!canvas) return;
+  const data = getTrend();
+  if (data.length < 2) { emptyEl.style.display='block'; return; }
+  emptyEl.style.display = 'none';
+
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width || 260, H = rect.height || 90;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { t: 10, r: 10, b: 18, l: 28 };
+  const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+
+  // Background
+  ctx.fillStyle = '#F9F9FB'; ctx.fillRect(0, 0, W, H);
+
+  // Grid lines at 0%, 50%, 100%
+  ctx.strokeStyle = '#E8EAF0'; ctx.lineWidth = 1;
+  [0, 0.5, 1].forEach(v => {
+    const y = pad.t + ch * (1 - v);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
+    ctx.fillStyle = '#AEAEB2'; ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'right'; ctx.fillText(Math.round(v*100)+'%', pad.l - 4, y + 3);
+  });
+
+  // Draw lines for each series
+  const series = [
+    { key: 'gp', color: '#16A34A' },
+    { key: 'pp', color: '#D97706' },
+    { key: 'lp', color: '#DC2626' },
+  ];
+
+  series.forEach(({ key, color }) => {
+    ctx.beginPath();
+    ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    data.forEach((d, i) => {
+      const x = pad.l + (i / (data.length - 1)) * cw;
+      const y = pad.t + ch * (1 - d[key] / 100);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Dot at last point
+    const last = data[data.length - 1];
+    const lx = pad.l + cw, ly = pad.t + ch * (1 - last[key] / 100);
+    ctx.beginPath(); ctx.arc(lx, ly, 3, 0, Math.PI*2);
+    ctx.fillStyle = color; ctx.fill();
+  });
+
+  // Time labels: first and last
+  ctx.fillStyle = '#AEAEB2'; ctx.font = '9px Inter, sans-serif'; ctx.textAlign = 'center';
+  if (data.length >= 2) {
+    ctx.fillText(fmtTime(data[0].ts), pad.l, H - 2);
+    ctx.fillText(fmtTime(data[data.length-1].ts), pad.l + cw, H - 2);
+  }
+}
+
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
 function refreshDash() {
   const s = DB.subs, n = s.length;
   const got = s.filter(x=>x.u==='got').length;
@@ -313,48 +468,79 @@ function refreshDash() {
   document.getElementById('stqs').textContent = qs.length;
   if (n > 0) {
     const gp=Math.round(got/n*100), pp=Math.round(par/n*100), lp=100-gp-pp;
-    document.getElementById('mg').style.width=gp+'%';
-    document.getElementById('mp').style.width=pp+'%';
-    document.getElementById('ml').style.width=lp+'%';
+    // bars
+    document.getElementById('vg-bar').style.width=gp+'%';
+    document.getElementById('vp-bar').style.width=pp+'%';
+    document.getElementById('vl-bar').style.width=lp+'%';
     document.getElementById('vg').textContent=gp+'%';
     document.getElementById('vp').textContent=pp+'%';
     document.getElementById('vl').textContent=lp+'%';
+    // big score: weighted (got=100, partial=50, lost=0)
+    const score = Math.round((got*100 + par*50) / n);
+    const el = document.getElementById('pulse-score');
+    const lbl = document.getElementById('pulse-label');
+    const emoji = document.getElementById('pulse-emoji');
+    el.textContent = score + '%';
+    if (score >= 70) {
+      el.style.color='var(--green)'; lbl.style.color='var(--green)';
+      lbl.textContent='Class is following well'; emoji.textContent='✅';
+    } else if (score >= 40) {
+      el.style.color='var(--amber)'; lbl.style.color='var(--amber)';
+      lbl.textContent='Some confusion — consider pausing'; emoji.textContent='🤔';
+    } else {
+      el.style.color='var(--red)'; lbl.style.color='var(--red)';
+      lbl.textContent='Class needs help — slow down'; emoji.textContent='🆘';
+    }
+    // Save trend snapshot and redraw chart
+    saveTrend({ ts: Date.now(), gp, pp, lp });
+    drawTrend();
+  } else {
+    drawTrend();
   }
   const cl = document.getElementById('qlist');
   if (!qs.length) {
     cl.innerHTML='<div class="empty-st"><div class="empty-ic">💬</div>No questions yet — waiting for students.</div>';
   } else {
-    // Group similar by keyword overlap (simple client-side)
+    // Group similar questions but show ALL of them
     const groups = groupQuestions(qs);
-    cl.innerHTML = groups.map((g,i) => `
-      <div class="qg">
+    cl.innerHTML = groups.map(g => {
+      const subs = g.items.map(item => `
+        <div style="padding:10px 14px;background:var(--bg);border-radius:8px;margin-top:8px;font-size:13px;color:var(--ink2);line-height:1.5;border-left:3px solid ${item.u==='lost'?'var(--red)':item.u==='got'?'var(--green)':'var(--amber)'};">
+          ${esc(item.q)}
+          <div style="font-size:11px;color:var(--ink3);margin-top:4px;">${ago(item.ts)} · Anonymous</div>
+        </div>`).join('');
+      return `
+      <div class="qg" style="margin-bottom:12px;">
         <div class="qg-top">
-          <div class="qg-text">${esc(g.q)}</div>
-          <div class="qc ${g.count>=2?'hot':''}">${g.count > 1 ? '×'+g.count : '×1'}</div>
+          <div class="qg-text">${esc(g.items[0].q)}</div>
+          <div class="qc ${g.items.length>=2?'hot':''}">${g.items.length > 1 ? g.items.length+' similar' : '×1'}</div>
         </div>
-        <div class="qg-sub">${ago(g.ts)} · Anonymous${g.count>1?' · '+g.count+' similar questions':''}</div>
-      </div>`).join('');
+        ${g.items.length > 1 ? subs : ''}
+        <div class="qg-sub">${ago(g.items[0].ts)} · Anonymous</div>
+      </div>`;
+    }).join('');
   }
 }
 
 function groupQuestions(qs) {
-  // Simple grouping: treat consecutive similar as group
+  // Group similar questions, but keep ALL items for display
   const result = [];
   const used = new Set();
   qs.forEach((a, i) => {
     if (used.has(i)) return;
-    let count = 1;
+    const items = [a];
     const aWords = new Set(a.q.toLowerCase().split(/\W+/).filter(w=>w.length>4));
     qs.forEach((b, j) => {
       if (j <= i || used.has(j)) return;
       const bWords = b.q.toLowerCase().split(/\W+/).filter(w=>w.length>4);
       const overlap = bWords.filter(w=>aWords.has(w)).length;
-      if (overlap >= 1) { count++; used.add(j); }
+      if (overlap >= 1) { items.push(b); used.add(j); }
     });
     used.add(i);
-    result.push({ q: a.q, count, ts: a.ts });
+    result.push({ items, ts: a.ts });
   });
-  return result.sort((a,b) => b.count - a.count);
+  // Sort: groups with most questions first, then by time
+  return result.sort((a,b) => b.items.length - a.items.length || a.ts - b.ts);
 }
 
 async function runAI() {
@@ -408,9 +594,9 @@ Be direct, brief, and practical.`;
     const data = await res.json();
     renderAI(data.content?.[0]?.text || '');
   } catch(e) {
-    document.getElementById('aiout').innerHTML = '<span style="color:var(--red)">Connection error. Please try again.</span>';
-    document.getElementById('aiout').style.display = 'block';
-    document.getElementById('aiempty').style.display = 'none';
+    document.getElementById('aiempty').style.display = 'block';
+    document.getElementById('aiempty').textContent = 'Not enough data to support analysis yet. Ask students to submit more responses first.';
+    document.getElementById('aiout').style.display = 'none';
   }
 
   btn.disabled = false; btn.classList.remove('loading');
@@ -463,7 +649,7 @@ function loadDemo() {
     { u:'lost',    q:"", ts:Date.now()-8000 },
     { u:'got',     q:"", ts:Date.now()-3000 },
   ];
-  DB.subs.push(...demo);
+  demo.forEach(d => DB.push(d));
   demo.filter(s=>s.q).forEach(s=>{
     const f=document.getElementById('flist');
     const d=document.createElement('div');
@@ -474,6 +660,17 @@ function loadDemo() {
   document.getElementById('fct').textContent=demo.filter(s=>s.q).length;
 }
 
+function clearSession() {
+  if (confirm('Clear all student responses? This cannot be undone.')) {
+    DB.clear();
+    clearTrend();
+    refreshDash();
+    document.getElementById('aiempty').style.display = 'block';
+    document.getElementById('aiout').style.display = 'none';
+    document.getElementById('aibtntxt').textContent = 'Generate AI Insight';
+  }
+}
+
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function ago(ts){
   const s=Math.floor((Date.now()-ts)/1000);
@@ -481,6 +678,20 @@ function ago(ts){
   if(s<3600) return Math.floor(s/60)+' min ago';
   return Math.floor(s/3600)+'h ago';
 }
+
+// Restore feed on load
+(function restoreFeed() {
+  const subs = DB.subs;
+  const qs = subs.filter(s => s.q);
+  const f = document.getElementById('flist');
+  qs.slice().reverse().forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'fi ' + s.u;
+    d.innerHTML = esc(s.q) + '<div class="fi-time">' + ago(s.ts) + ' · Anonymous</div>';
+    f.appendChild(d);
+  });
+  if (qs.length) document.getElementById('fct').textContent = qs.length;
+})();
 
 setInterval(()=>{
   if(document.getElementById('professor-app').classList.contains('active')) refreshDash();
