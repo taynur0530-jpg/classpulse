@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClassPulse · AI Classroom Insight</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:     #111318;
+  --ink2:    #3C4048;
+  --ink3:    #6B7280;
+  --line:    #E8EAF0;
+  --bg:      #F9F9FB;
+  --white:   #FFFFFF;
+  --blue:    #2563EB;
+  --blue-l:  #EFF4FF;
+  --green:   #16A34A;
+  --green-l: #F0FDF4;
+  --amber:   #D97706;
+  --amber-l: #FFFBEB;
+  --red:     #DC2626;
+  --red-l:   #FEF2F2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+/* ROLE */
+#role-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;background:var(--white);}
+.brand{font-family:'Lora',serif;font-size:28px;color:var(--ink);margin-bottom:6px;text-align:center;}
+.brand-sub{font-size:13px;color:var(--ink3);margin-bottom:56px;text-align:center;}
+.role-grid{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.role-card{width:240px;padding:32px 28px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);cursor:pointer;transition:all .18s;}
+.role-card:hover{border-color:var(--ink);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.role-ic{font-size:28px;margin-bottom:16px;display:block;}
+.role-name{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.role-desc{font-size:13px;color:var(--ink3);line-height:1.6;}
+
+/* APP SHELL */
+.app{display:none;flex-direction:column;min-height:100vh;}
+.app.active{display:flex;}
+.top-bar{height:52px;background:var(--white);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;position:sticky;top:0;z-index:50;}
+.top-brand{font-family:'Lora',serif;font-size:17px;color:var(--ink);}
+.top-role{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);background:var(--bg);padding:4px 12px;border-radius:20px;}
+.top-sw{font-size:12px;color:var(--ink3);cursor:pointer;transition:color .15s;}
+.top-sw:hover{color:var(--ink);}
+
+/* STUDENT */
+#student-app .body{flex:1;max-width:560px;width:100%;margin:0 auto;padding:40px 24px 60px;}
+.page-h{font-family:'Lora',serif;font-size:24px;color:var(--ink);margin-bottom:6px;}
+.page-s{font-size:13px;color:var(--ink3);margin-bottom:36px;}
+.live-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--green);background:var(--green-l);padding:4px 10px;border-radius:20px;margin-bottom:20px;}
+.live-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:block;animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.field{margin-bottom:24px;}
+.f-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;display:block;}
+.u-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.u-btn{padding:14px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;transition:all .15s;text-align:center;font-family:'Inter',sans-serif;}
+.u-btn:hover{border-color:var(--ink3);}
+.u-emoji{font-size:22px;display:block;margin-bottom:6px;}
+.u-lab{font-size:12px;font-weight:500;color:var(--ink2);}
+.u-btn.sg{border-color:var(--green);background:var(--green-l);}
+.u-btn.sg .u-lab{color:var(--green);}
+.u-btn.sa{border-color:var(--amber);background:var(--amber-l);}
+.u-btn.sa .u-lab{color:var(--amber);}
+.u-btn.sr{border-color:var(--red);background:var(--red-l);}
+.u-btn.sr .u-lab{color:var(--red);}
+textarea.qi{width:100%;min-height:110px;padding:14px 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);resize:vertical;line-height:1.6;transition:border-color .15s;}
+textarea.qi:focus{outline:none;border-color:var(--blue);}
+textarea.qi::placeholder{color:var(--ink3);}
+.anon-note{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-top:8px;}
+.sub-btn{width:100%;height:46px;border:none;background:var(--ink);color:var(--white);border-radius:10px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
+.sub-btn:hover{background:var(--ink2);}
+.sub-btn:disabled{background:var(--line);color:var(--ink3);cursor:not-allowed;}
+.toast{display:none;margin-top:14px;background:var(--green-l);border:1px solid #BBF7D0;border-radius:10px;padding:14px 18px;font-size:13px;font-weight:500;color:var(--green);}
+.toast.show{display:flex;align-items:center;gap:8px;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.feed{margin-top:40px;}
+.feed-hd{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;display:flex;justify-content:space-between;}
+.fi{padding:14px 16px;background:var(--white);border-radius:10px;border-left:3px solid var(--line);margin-bottom:8px;font-size:13px;color:var(--ink2);line-height:1.6;animation:fi .25s ease;}
+.fi.got{border-left-color:var(--green);}
+.fi.partial{border-left-color:var(--amber);}
+.fi.lost{border-left-color:var(--red);}
+.fi-time{font-size:11px;color:var(--ink3);margin-top:4px;}
+
+/* PROFESSOR */
+#professor-app .body{flex:1;display:grid;grid-template-columns:300px 1fr;min-height:0;}
+.lpanel{background:var(--white);border-right:1px solid var(--line);padding:28px 24px;overflow-y:auto;}
+.rpanel{padding:28px 32px;overflow-y:auto;}
+.psec{margin-bottom:32px;}
+.ptitle{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:block;}
+.mbar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;display:flex;gap:2px;margin-bottom:12px;}
+.mseg{height:100%;transition:width .5s ease;border-radius:4px;}
+.mrows{display:flex;flex-direction:column;gap:8px;}
+.mrow{display:flex;justify-content:space-between;align-items:center;}
+.mleft{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);}
+.mdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.mval{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--ink);}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;}
+.stile{background:var(--bg);border-radius:8px;padding:14px 16px;}
+.sn{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--ink);display:block;margin-bottom:2px;}
+.sl{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;}
+.ai-trig{width:100%;height:42px;background:var(--blue);color:var(--white);border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.ai-trig:hover{background:#1D4ED8;}
+.ai-trig:disabled{background:var(--line);color:var(--ink3);cursor:not-allowed;}
+.sp{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.loading .sp{display:block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.rtitle{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
+.ai-box{border:1.5px solid var(--line);border-radius:12px;background:var(--white);overflow:hidden;margin-bottom:32px;}
+.ai-head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:var(--bg);}
+.ai-logo-sq{width:28px;height:28px;background:var(--ink);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--white);font-weight:700;flex-shrink:0;}
+.ai-ht .ht{font-size:13px;font-weight:600;color:var(--ink);}
+.ai-ht .hs{font-size:11px;color:var(--ink3);}
+.ai-body{padding:20px;min-height:130px;}
+.ai-empty-msg{font-size:13px;color:var(--ink3);font-style:italic;text-align:center;padding:24px 0;}
+.ai-out{font-size:13px;color:var(--ink2);line-height:1.8;display:none;}
+.sec-hd{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-top:18px;margin-bottom:6px;display:block;}
+.ai-action{background:var(--blue-l);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:14px;font-size:13px;color:#1E40AF;line-height:1.7;}
+.ai-action strong{display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;color:#3B82F6;}
+.qg{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:10px;transition:box-shadow .15s;}
+.qg:hover{box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.qg-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.qg-text{font-size:14px;color:var(--ink);line-height:1.5;flex:1;font-weight:500;}
+.qc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--ink3);background:var(--bg);padding:3px 8px;border-radius:6px;flex-shrink:0;}
+.qc.hot{background:var(--red-l);color:var(--red);}
+.qg-sub{font-size:12px;color:var(--ink3);margin-top:6px;}
+.empty-st{text-align:center;padding:48px 24px;color:var(--ink3);font-size:13px;}
+.empty-ic{font-size:32px;margin-bottom:10px;opacity:.4;}
+.div{height:1px;background:var(--line);margin:28px 0;}
+</style>
+</head>
+<body>
+
+<!-- ROLE SELECT -->
+<div id="role-screen">
+  <div class="brand">ClassPulse</div>
+  <div class="brand-sub">AI Classroom Insight Tool</div>
+  <div class="role-grid">
+    <div class="role-card" onclick="enter('student')">
+      <span class="role-ic">🎓</span>
+      <div class="role-name">I'm a Student</div>
+      <div class="role-desc">Submit anonymous questions and rate your understanding in real time.</div>
+    </div>
+    <div class="role-card" onclick="enter('professor')">
+      <span class="role-ic">📋</span>
+      <div class="role-name">I'm the Professor / TA</div>
+      <div class="role-desc">View live understanding data, grouped questions, and AI-generated teaching suggestions.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENT APP -->
+<div id="student-app" class="app">
+  <div class="top-bar">
+    <div class="top-brand">ClassPulse</div>
+    <div class="top-role">Student</div>
+    <div class="top-sw" onclick="goHome()">← Change role</div>
+  </div>
+  <div class="body">
+    <div class="live-chip">Live session</div>
+    <div class="page-h">How are you following along?</div>
+    <div class="page-s">Your responses are completely anonymous. Your professor uses them to adjust the lecture.</div>
+
+    <div class="field">
+      <span class="f-label">Your understanding right now</span>
+      <div class="u-row">
+        <div class="u-btn" onclick="pickU(this,'got','sg')"><span class="u-emoji">✅</span><div class="u-lab">Got it</div></div>
+        <div class="u-btn" onclick="pickU(this,'partial','sa')"><span class="u-emoji">🤔</span><div class="u-lab">Partially</div></div>
+        <div class="u-btn" onclick="pickU(this,'lost','sr')"><span class="u-emoji">😵</span><div class="u-lab">Lost</div></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="f-label">Ask a question (optional)</span>
+      <textarea class="qi" id="qi" placeholder="What's confusing you? No one will know it was you…"></textarea>
+      <div class="anon-note">🔒 Anonymous — your name is never stored or shown.</div>
+    </div>
+
+    <button class="sub-btn" id="sbtn" onclick="submitStudent()">Send Feedback</button>
+    <div class="toast" id="toast">✓ Received — your professor can see it now.</div>
+
+    <div class="feed">
+      <div class="feed-hd"><span>What others are asking</span><span id="fct" style="font-family:'JetBrains Mono',monospace;"></span></div>
+      <div id="flist"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFESSOR APP -->
+<div id="professor-app" class="app">
+  <div class="top-bar">
+    <div class="top-brand">ClassPulse</div>
+    <div class="top-role">Professor · TA</div>
+    <div class="top-sw" onclick="goHome()">← Change role</div>
+  </div>
+  <div class="body">
+
+    <div class="lpanel">
+      <div class="psec">
+        <span class="ptitle">Class Understanding</span>
+        <div class="mbar">
+          <div class="mseg" id="mg" style="background:var(--green);width:0%"></div>
+          <div class="mseg" id="mp" style="background:var(--amber);width:0%"></div>
+          <div class="mseg" id="ml" style="background:var(--red);width:0%"></div>
+        </div>
+        <div class="mrows">
+          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--green)"></div>Got it</div><div class="mval" id="vg">—</div></div>
+          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--amber)"></div>Partially</div><div class="mval" id="vp">—</div></div>
+          <div class="mrow"><div class="mleft"><div class="mdot" style="background:var(--red)"></div>Lost</div><div class="mval" id="vl">—</div></div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <span class="ptitle">Session Stats</span>
+        <div class="sgrid">
+          <div class="stile"><span class="sn" id="sttl">0</span><span class="sl">Responses</span></div>
+          <div class="stile"><span class="sn" id="stqs">0</span><span class="sl">Questions</span></div>
+        </div>
+      </div>
+
+      <button class="ai-trig" id="aibtn" onclick="runAI()">
+        <div class="sp"></div>
+        <span id="aibtntxt">Generate AI Insight</span>
+      </button>
+      <div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:8px;line-height:1.6;">Groups questions · rates understanding<br>suggests what to re-explain · recommends action</div>
+    </div>
+
+    <div class="rpanel">
+      <div class="rtitle">
+        <span>AI Insight</span>
+        <span style="font-size:11px;color:var(--ink3);font-weight:400;text-transform:none;letter-spacing:0;">Powered by Claude</span>
+      </div>
+      <div class="ai-box">
+        <div class="ai-head">
+          <div class="ai-logo-sq">AI</div>
+          <div class="ai-ht">
+            <div class="ht">ClassPulse Analysis</div>
+            <div class="hs">Understanding · Common questions · Topics to re-explain · Immediate action</div>
+          </div>
+        </div>
+        <div class="ai-body">
+          <div class="ai-empty-msg" id="aiempty">Click <strong>Generate AI Insight</strong> to analyze student responses.</div>
+          <div class="ai-out" id="aiout"></div>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="rtitle">
+        <span>Student Questions</span>
+        <div class="live-chip" style="font-size:10px;padding:3px 8px;">Live</div>
+      </div>
+      <div id="qlist"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const DB = { subs: [] };
+let uPick = null;
+
+function enter(role) {
+  document.getElementById('role-screen').style.display = 'none';
+  document.getElementById(role+'-app').classList.add('active');
+  if (role === 'professor') refreshDash();
+}
+function goHome() {
+  document.querySelectorAll('.app').forEach(a => a.classList.remove('active'));
+  document.getElementById('role-screen').style.display = 'flex';
+}
+
+function pickU(el, val, cls) {
+  document.querySelectorAll('.u-btn').forEach(b => b.classList.remove('sg','sa','sr'));
+  el.classList.add(cls);
+  uPick = val;
+}
+
+function submitStudent() {
+  const q = document.getElementById('qi').value.trim();
+  if (!uPick && !q) { document.getElementById('qi').focus(); return; }
+  DB.subs.push({ u: uPick || 'partial', q, ts: Date.now() });
+  const btn = document.getElementById('sbtn');
+  const toast = document.getElementById('toast');
+  btn.disabled = true; btn.textContent = 'Sent ✓';
+  toast.classList.add('show');
+  if (q) {
+    const f = document.getElementById('flist');
+    const d = document.createElement('div');
+    d.className = 'fi '+(uPick||'partial');
+    d.innerHTML = esc(q)+'<div class="fi-time">Just now · Anonymous</div>';
+    f.insertBefore(d, f.firstChild);
+    document.getElementById('fct').textContent = f.children.length;
+  }
+  setTimeout(() => {
+    btn.disabled = false; btn.textContent = 'Send Feedback';
+    toast.classList.remove('show');
+    document.getElementById('qi').value = '';
+    document.querySelectorAll('.u-btn').forEach(b => b.classList.remove('sg','sa','sr'));
+    uPick = null;
+  }, 2800);
+}
+
+function refreshDash() {
+  const s = DB.subs, n = s.length;
+  const got = s.filter(x=>x.u==='got').length;
+  const par = s.filter(x=>x.u==='partial').length;
+  const los = s.filter(x=>x.u==='lost').length;
+  const qs  = s.filter(x=>x.q);
+  document.getElementById('sttl').textContent = n;
+  document.getElementById('stqs').textContent = qs.length;
+  if (n > 0) {
+    const gp=Math.round(got/n*100), pp=Math.round(par/n*100), lp=100-gp-pp;
+    document.getElementById('mg').style.width=gp+'%';
+    document.getElementById('mp').style.width=pp+'%';
+    document.getElementById('ml').style.width=lp+'%';
+    document.getElementById('vg').textContent=gp+'%';
+    document.getElementById('vp').textContent=pp+'%';
+    document.getElementById('vl').textContent=lp+'%';
+  }
+  const cl = document.getElementById('qlist');
+  if (!qs.length) {
+    cl.innerHTML='<div class="empty-st"><div class="empty-ic">💬</div>No questions yet — waiting for students.</div>';
+  } else {
+    // Group similar by keyword overlap (simple client-side)
+    const groups = groupQuestions(qs);
+    cl.innerHTML = groups.map((g,i) => `
+      <div class="qg">
+        <div class="qg-top">
+          <div class="qg-text">${esc(g.q)}</div>
+          <div class="qc ${g.count>=2?'hot':''}">${g.count > 1 ? '×'+g.count : '×1'}</div>
+        </div>
+        <div class="qg-sub">${ago(g.ts)} · Anonymous${g.count>1?' · '+g.count+' similar questions':''}</div>
+      </div>`).join('');
+  }
+}
+
+function groupQuestions(qs) {
+  // Simple grouping: treat consecutive similar as group
+  const result = [];
+  const used = new Set();
+  qs.forEach((a, i) => {
+    if (used.has(i)) return;
+    let count = 1;
+    const aWords = new Set(a.q.toLowerCase().split(/\W+/).filter(w=>w.length>4));
+    qs.forEach((b, j) => {
+      if (j <= i || used.has(j)) return;
+      const bWords = b.q.toLowerCase().split(/\W+/).filter(w=>w.length>4);
+      const overlap = bWords.filter(w=>aWords.has(w)).length;
+      if (overlap >= 1) { count++; used.add(j); }
+    });
+    used.add(i);
+    result.push({ q: a.q, count, ts: a.ts });
+  });
+  return result.sort((a,b) => b.count - a.count);
+}
+
+async function runAI() {
+  if (DB.subs.length === 0) loadDemo();
+  const btn = document.getElementById('aibtn');
+  btn.disabled = true; btn.classList.add('loading');
+  document.getElementById('aibtntxt').textContent = 'Analyzing…';
+
+  const s = DB.subs, n = s.length;
+  const got = s.filter(x=>x.u==='got').length;
+  const par = s.filter(x=>x.u==='partial').length;
+  const los = s.filter(x=>x.u==='lost').length;
+  const qs = s.filter(x=>x.q).map(x=>`• "${x.q}"`).join('\n');
+
+  const prompt = `You are an AI teaching assistant helping a professor in a live lecture.
+
+STUDENT FEEDBACK (${n} responses):
+- Got it (understand well): ${got} students (${Math.round(got/n*100)}%)
+- Partially understand: ${par} students (${Math.round(par/n*100)}%)
+- Lost / confused: ${los} students (${Math.round(los/n*100)}%)
+
+ANONYMOUS STUDENT QUESTIONS:
+${qs || '(no questions submitted)'}
+
+Provide exactly four sections with these exact headers:
+
+UNDERSTANDING RATING
+One direct sentence on the overall comprehension level of the class right now.
+
+COMMON QUESTION THEMES
+2-3 bullet points summarizing the main themes in the questions. Be specific about what concepts are unclear.
+
+TOPICS TO RE-EXPLAIN
+1-2 specific concepts or topics the professor should revisit. Reference actual content from the questions.
+
+IMMEDIATE ACTION
+One specific, actionable instruction for the professor to do in the next 2 minutes. Be concrete.
+
+Be direct, brief, and practical.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    renderAI(data.content?.[0]?.text || '');
+  } catch(e) {
+    document.getElementById('aiout').innerHTML = '<span style="color:var(--red)">Connection error. Please try again.</span>';
+    document.getElementById('aiout').style.display = 'block';
+    document.getElementById('aiempty').style.display = 'none';
+  }
+
+  btn.disabled = false; btn.classList.remove('loading');
+  document.getElementById('aibtntxt').textContent = 'Refresh AI Insight';
+  refreshDash();
+}
+
+function renderAI(text) {
+  document.getElementById('aiempty').style.display = 'none';
+  const el = document.getElementById('aiout');
+  el.style.display = 'block';
+
+  const secs = [
+    { h: 'UNDERSTANDING RATING', icon: '📊' },
+    { h: 'COMMON QUESTION THEMES', icon: '💬' },
+    { h: 'TOPICS TO RE-EXPLAIN', icon: '🔁' },
+    { h: 'IMMEDIATE ACTION', icon: '⚡', action: true },
+  ];
+
+  let html = '';
+  secs.forEach((sec, i) => {
+    const start = text.indexOf(sec.h);
+    if (start === -1) return;
+    const nextH = secs[i+1] ? text.indexOf(secs[i+1].h) : text.length;
+    const body = text.slice(start + sec.h.length, nextH > -1 ? nextH : text.length).trim();
+
+    if (sec.action) {
+      html += `<div class="ai-action"><strong>⚡ IMMEDIATE ACTION</strong>${esc(body)}</div>`;
+    } else {
+      html += `<span class="sec-hd">${sec.icon} ${sec.h}</span>`;
+      const lines = body.split('\n').filter(l=>l.trim());
+      html += `<div style="margin-bottom:14px;">${lines.map(l =>
+        `<div style="margin-bottom:5px;">${esc(l.replace(/^[•\-]\s*/,'').replace(/^\d+\.\s*/,''))}</div>`
+      ).join('')}</div>`;
+    }
+  });
+
+  el.innerHTML = html || esc(text);
+}
+
+function loadDemo() {
+  const demo = [
+    { u:'lost',    q:"What is the difference between competitive advantage and comparative advantage?", ts:Date.now()-180000 },
+    { u:'partial', q:"Can you give a real-world example of the Blue Ocean strategy?", ts:Date.now()-120000 },
+    { u:'lost',    q:"How does Porter's Five Forces apply to digital platform markets?", ts:Date.now()-90000 },
+    { u:'partial', q:"How do we actually calculate market share in practice?", ts:Date.now()-60000 },
+    { u:'got',     q:"", ts:Date.now()-45000 },
+    { u:'got',     q:"", ts:Date.now()-30000 },
+    { u:'partial', q:"", ts:Date.now()-15000 },
+    { u:'lost',    q:"", ts:Date.now()-8000 },
+    { u:'got',     q:"", ts:Date.now()-3000 },
+  ];
+  DB.subs.push(...demo);
+  demo.filter(s=>s.q).forEach(s=>{
+    const f=document.getElementById('flist');
+    const d=document.createElement('div');
+    d.className='fi '+s.u;
+    d.innerHTML=esc(s.q)+'<div class="fi-time">'+ago(s.ts)+' · Anonymous</div>';
+    f.appendChild(d);
+  });
+  document.getElementById('fct').textContent=demo.filter(s=>s.q).length;
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function ago(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'Just now';
+  if(s<3600) return Math.floor(s/60)+' min ago';
+  return Math.floor(s/3600)+'h ago';
+}
+
+setInterval(()=>{
+  if(document.getElementById('professor-app').classList.contains('active')) refreshDash();
+}, 4000);
+</script>
+</body>
+</html>
