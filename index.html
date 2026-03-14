@@ -306,19 +306,39 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
 </div>
 
 <script>
-// ── Persistent storage via localStorage ──
-const STORAGE_KEY = 'classpulse_subs';
+// ── Firebase Realtime Database ──
+const DB_URL = 'https://classpulse-3075e-default-rtdb.firebaseio.com';
+
 const DB = {
-  get subs() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch(e) { return []; }
+  _cache: [],
+  get subs() { return this._cache; },
+  async push(item) {
+    await fetch(DB_URL + '/submissions.json', {
+      method: 'POST',
+      body: JSON.stringify(item)
+    });
   },
-  push(item) {
-    const arr = this.subs;
-    arr.push(item);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  async clear() {
+    await fetch(DB_URL + '/submissions.json', { method: 'DELETE' });
+    this._cache = [];
   },
-  clear() { localStorage.removeItem(STORAGE_KEY); }
+  listen(callback) {
+    // Poll every 3 seconds
+    const poll = async () => {
+      try {
+        const res = await fetch(DB_URL + '/submissions.json');
+        const data = await res.json();
+        if (data) {
+          this._cache = Object.values(data).sort((a,b) => a.ts - b.ts);
+        } else {
+          this._cache = [];
+        }
+        callback(this._cache);
+      } catch(e) { console.log('DB poll error', e); }
+    };
+    poll();
+    setInterval(poll, 3000);
+  }
 };
 let uPick = null;
 
@@ -345,13 +365,14 @@ function pickU(el, val, cls) {
   uPick = val;
 }
 
-function submitStudent() {
+async function submitStudent() {
   const q = document.getElementById('qi').value.trim();
   if (!uPick && !q) { document.getElementById('qi').focus(); return; }
-  DB.push({ u: uPick || 'partial', q, ts: Date.now() });
   const btn = document.getElementById('sbtn');
   const toast = document.getElementById('toast');
-  btn.disabled = true; btn.textContent = 'Sent ✓';
+  btn.disabled = true; btn.textContent = 'Sending…';
+  await DB.push({ u: uPick || 'partial', q, ts: Date.now() });
+  btn.textContent = 'Sent ✓';
   toast.classList.add('show');
   if (q) {
     const f = document.getElementById('flist');
@@ -544,7 +565,6 @@ function groupQuestions(qs) {
 }
 
 async function runAI() {
-  if (DB.subs.length === 0) loadDemo();
   const btn = document.getElementById('aibtn');
   btn.disabled = true; btn.classList.add('loading');
   document.getElementById('aibtntxt').textContent = 'Analyzing…';
@@ -637,7 +657,7 @@ function renderAI(text) {
   el.innerHTML = html || esc(text);
 }
 
-function loadDemo() {
+async function loadDemo() {
   const demo = [
     { u:'lost',    q:"What is the difference between competitive advantage and comparative advantage?", ts:Date.now()-180000 },
     { u:'partial', q:"Can you give a real-world example of the Blue Ocean strategy?", ts:Date.now()-120000 },
@@ -649,7 +669,8 @@ function loadDemo() {
     { u:'lost',    q:"", ts:Date.now()-8000 },
     { u:'got',     q:"", ts:Date.now()-3000 },
   ];
-  demo.forEach(d => DB.push(d));
+  // Load demo data directly into Firebase
+  for (const d of demo) { await DB.push(d); }
   demo.filter(s=>s.q).forEach(s=>{
     const f=document.getElementById('flist');
     const d=document.createElement('div');
@@ -660,9 +681,9 @@ function loadDemo() {
   document.getElementById('fct').textContent=demo.filter(s=>s.q).length;
 }
 
-function clearSession() {
+async function clearSession() {
   if (confirm('Clear all student responses? This cannot be undone.')) {
-    DB.clear();
+    await DB.clear();
     clearTrend();
     refreshDash();
     document.getElementById('aiempty').style.display = 'block';
@@ -679,11 +700,12 @@ function ago(ts){
   return Math.floor(s/3600)+'h ago';
 }
 
-// Restore feed on load
-(function restoreFeed() {
-  const subs = DB.subs;
+// ── Real-time sync via Firebase polling ──
+DB.listen((subs) => {
+  // Update student feed
   const qs = subs.filter(s => s.q);
   const f = document.getElementById('flist');
+  f.innerHTML = '';
   qs.slice().reverse().forEach(s => {
     const d = document.createElement('div');
     d.className = 'fi ' + s.u;
@@ -691,11 +713,14 @@ function ago(ts){
     f.appendChild(d);
   });
   if (qs.length) document.getElementById('fct').textContent = qs.length;
-})();
 
-setInterval(()=>{
-  if(document.getElementById('professor-app').classList.contains('active')) refreshDash();
-}, 4000);
+  // Update professor dashboard if open
+  if (document.getElementById('professor-app').classList.contains('active')) {
+    refreshDash();
+  }
+});
 </script>
 </body>
 </html>
+Done
+上面就是完整代码，从 <!DOCTY
