@@ -24,8 +24,6 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
-
-/* ROLE */
 #role-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;background:var(--white);}
 .brand{font-family:'Lora',serif;font-size:28px;color:var(--ink);margin-bottom:6px;text-align:center;}
 .brand-sub{font-size:13px;color:var(--ink3);margin-bottom:56px;text-align:center;}
@@ -35,8 +33,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-he
 .role-ic{font-size:28px;margin-bottom:16px;display:block;}
 .role-name{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:6px;}
 .role-desc{font-size:13px;color:var(--ink3);line-height:1.6;}
-
-/* APP SHELL */
 .app{display:none;flex-direction:column;min-height:100vh;}
 .app.active{display:flex;}
 .top-bar{height:52px;background:var(--white);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;position:sticky;top:0;z-index:50;}
@@ -44,8 +40,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-he
 .top-role{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);background:var(--bg);padding:4px 12px;border-radius:20px;}
 .top-sw{font-size:12px;color:var(--ink3);cursor:pointer;transition:color .15s;}
 .top-sw:hover{color:var(--ink);}
-
-/* STUDENT */
 #student-app .body{flex:1;max-width:560px;width:100%;margin:0 auto;padding:40px 24px 60px;}
 .page-h{font-family:'Lora',serif;font-size:24px;color:var(--ink);margin-bottom:6px;}
 .page-s{font-size:13px;color:var(--ink3);margin-bottom:36px;}
@@ -69,6 +63,10 @@ textarea.qi{width:100%;min-height:110px;padding:14px 16px;border:1.5px solid var
 textarea.qi:focus{outline:none;border-color:var(--blue);}
 textarea.qi::placeholder{color:var(--ink3);}
 .anon-note{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-top:8px;}
+.name-row{margin-top:10px;}
+.name-input{width:100%;height:40px;padding:0 14px;border:1.5px solid var(--line);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);background:var(--white);transition:border-color .15s;outline:none;}
+.name-input:focus{border-color:var(--blue);}
+.name-input::placeholder{color:var(--ink3);}
 .sub-btn{width:100%;height:46px;border:none;background:var(--ink);color:var(--white);border-radius:10px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
 .sub-btn:hover{background:var(--ink2);}
 .sub-btn:disabled{background:var(--line);color:var(--ink3);cursor:not-allowed;}
@@ -77,20 +75,18 @@ textarea.qi::placeholder{color:var(--ink3);}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .feed{margin-top:40px;}
 .feed-hd{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;display:flex;justify-content:space-between;}
-.fi{padding:14px 16px;background:var(--white);border-radius:10px;border-left:3px solid var(--line);margin-bottom:8px;font-size:13px;color:var(--ink2);line-height:1.6;animation:fi .25s ease;}
+.fi{padding:14px 16px;background:var(--white);border-radius:10px;border-left:3px solid var(--line);margin-bottom:8px;font-size:13px;color:var(--ink2);line-height:1.6;}
 .fi.got{border-left-color:var(--green);}
 .fi.partial{border-left-color:var(--amber);}
 .fi.lost{border-left-color:var(--red);}
 .fi-time{font-size:11px;color:var(--ink3);margin-top:4px;}
-
-/* PROFESSOR */
 #professor-app .body{flex:1;display:grid;grid-template-columns:300px 1fr;min-height:0;}
 .lpanel{background:var(--white);border-right:1px solid var(--line);padding:28px 24px;overflow-y:auto;}
 .rpanel{padding:28px 32px;overflow-y:auto;}
 .psec{margin-bottom:32px;}
 .ptitle{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:block;}
 .pulse-score-wrap{text-align:center;padding:8px 0 20px;}
-.pulse-score-num{font-family:'Lora',serif;font-size:56px;font-weight:600;line-height:1;transition:color .5s,opacity .3s;}
+.pulse-score-num{font-family:'Lora',serif;font-size:56px;font-weight:600;line-height:1;transition:color .5s;}
 .pulse-score-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;transition:color .5s;}
 .pulse-emoji{font-size:28px;margin-bottom:4px;display:block;}
 .pulse-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:4px;}
@@ -99,7 +95,6 @@ textarea.qi::placeholder{color:var(--ink3);}
 .pulse-bar-track{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden;}
 .pulse-bar-fill{height:100%;border-radius:3px;transition:width .5s ease;}
 .pulse-bar-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);width:32px;text-align:right;flex-shrink:0;}
-/* legacy — keep for JS compat */
 .mbar{display:none;}.mseg{}.mrows{display:none;}.mrow{}.mleft{}.mdot{}.mval{}
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;}
 .stile{background:var(--bg);border-radius:8px;padding:14px 16px;}
@@ -111,7 +106,6 @@ textarea.qi::placeholder{color:var(--ink3);}
 .sp{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
 .loading .sp{display:block;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .rtitle{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
 .ai-box{border:1.5px solid var(--line);border-radius:12px;background:var(--white);overflow:hidden;margin-bottom:32px;}
 .ai-head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:var(--bg);}
@@ -133,7 +127,6 @@ textarea.qi::placeholder{color:var(--ink3);}
 .qg-sub{font-size:12px;color:var(--ink3);margin-top:6px;}
 .empty-st{text-align:center;padding:48px 24px;color:var(--ink3);font-size:13px;}
 .empty-ic{font-size:32px;margin-bottom:10px;opacity:.4;}
-/* Trend chart */
 .trend-wrap{margin-top:4px;}
 .trend-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .trend-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);}
@@ -148,7 +141,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
 </head>
 <body>
 
-<!-- ROLE SELECT -->
 <div id="role-screen">
   <div class="brand">ClassPulse</div>
   <div class="brand-sub">AI Classroom Insight Tool</div>
@@ -166,7 +158,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
   </div>
 </div>
 
-<!-- STUDENT APP -->
 <div id="student-app" class="app">
   <div class="top-bar">
     <div class="top-brand">ClassPulse</div>
@@ -177,7 +168,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
     <div class="live-chip">Live session</div>
     <div class="page-h">How are you following along?</div>
     <div class="page-s">Your responses are completely anonymous. Your professor uses them to adjust the lecture.</div>
-
     <div class="field">
       <span class="f-label">Your understanding right now</span>
       <div class="u-row">
@@ -186,16 +176,16 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
         <div class="u-btn" onclick="pickU(this,'lost','sr')"><span class="u-emoji">😵</span><div class="u-lab">Lost</div></div>
       </div>
     </div>
-
     <div class="field">
-      <span class="f-label">Ask a question (optional)</span>
-      <textarea class="qi" id="qi" placeholder="What's confusing you? No one will know it was you…"></textarea>
-      <div class="anon-note">🔒 Anonymous — your name is never stored or shown.</div>
+      <span class="f-label">Share your thoughts</span>
+      <textarea class="qi" id="qi" placeholder="After the class discussion, continue refining your thoughts here… or share any anonymous feedback about the lecture."></textarea>
+      <div class="name-row">
+        <input type="text" id="qi-name" class="name-input" placeholder="Add your name (optional)" />
+      </div>
+      <div class="anon-note">💬 Share anonymously, or add your name if you'd like to own your idea.</div>
     </div>
-
     <button class="sub-btn" id="sbtn" onclick="submitStudent()">Send Feedback</button>
     <div class="toast" id="toast">✓ Received — your professor can see it now.</div>
-
     <div class="feed">
       <div class="feed-hd"><span>What others are asking</span><span id="fct" style="font-family:'JetBrains Mono',monospace;"></span></div>
       <div id="flist"></div>
@@ -203,7 +193,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
   </div>
 </div>
 
-<!-- PROFESSOR APP -->
 <div id="professor-app" class="app">
   <div class="top-bar">
     <div class="top-brand">ClassPulse</div>
@@ -211,7 +200,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
     <div class="top-sw" onclick="goHome()">← Change role</div>
   </div>
   <div class="body">
-
     <div class="lpanel">
       <div class="psec">
         <span class="ptitle">Class Understanding</span>
@@ -237,11 +225,7 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
             <div class="pulse-bar-val" id="vl">—</div>
           </div>
         </div>
-        <!-- hidden legacy els for JS compat -->
-        <div style="display:none">
-          <div id="mg"></div><div id="mp"></div><div id="ml"></div>
-        </div>
-        <!-- Trend chart -->
+        <div style="display:none"><div id="mg"></div><div id="mp"></div><div id="ml"></div></div>
         <div class="trend-wrap">
           <div class="trend-header">
             <span class="trend-title">Trend over time</span>
@@ -257,7 +241,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
           </div>
         </div>
       </div>
-
       <div class="psec">
         <span class="ptitle">Session Stats</span>
         <div class="sgrid">
@@ -265,7 +248,6 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
           <div class="stile"><span class="sn" id="stqs">0</span><span class="sl">Questions</span></div>
         </div>
       </div>
-
       <button class="ai-trig" id="aibtn" onclick="runAI()">
         <div class="sp"></div>
         <span id="aibtntxt">Generate AI Insight</span>
@@ -273,12 +255,8 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
       <div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:8px;line-height:1.6;">Groups questions · rates understanding<br>suggests what to re-explain · recommends action</div>
       <button onclick="clearSession()" style="width:100%;margin-top:10px;height:34px;background:transparent;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--ink3);cursor:pointer;font-family:'Inter',sans-serif;">🗑 Clear all responses</button>
     </div>
-
     <div class="rpanel">
-      <div class="rtitle">
-        <span>AI Insight</span>
-        
-      </div>
+      <div class="rtitle"><span>AI Insight</span></div>
       <div class="ai-box">
         <div class="ai-head">
           <div class="ai-logo-sq">AI</div>
@@ -292,47 +270,34 @@ canvas#trend-canvas{width:100%;height:100%;display:block;}
           <div class="ai-out" id="aiout"></div>
         </div>
       </div>
-
       <div class="div"></div>
-
       <div class="rtitle">
         <span>Student Questions</span>
         <div class="live-chip" style="font-size:10px;padding:3px 8px;">Live</div>
       </div>
       <div id="qlist"></div>
     </div>
-
   </div>
 </div>
 
 <script>
-// ── Firebase Realtime Database ──
 const DB_URL = 'https://classpulse-3075e-default-rtdb.firebaseio.com';
-
 const DB = {
   _cache: [],
   get subs() { return this._cache; },
   async push(item) {
-    await fetch(DB_URL + '/submissions.json', {
-      method: 'POST',
-      body: JSON.stringify(item)
-    });
+    await fetch(DB_URL + '/submissions.json', { method: 'POST', body: JSON.stringify(item) });
   },
   async clear() {
     await fetch(DB_URL + '/submissions.json', { method: 'DELETE' });
     this._cache = [];
   },
   listen(callback) {
-    // Poll every 3 seconds
     const poll = async () => {
       try {
         const res = await fetch(DB_URL + '/submissions.json');
         const data = await res.json();
-        if (data) {
-          this._cache = Object.values(data).sort((a,b) => a.ts - b.ts);
-        } else {
-          this._cache = [];
-        }
+        this._cache = data ? Object.values(data).sort((a,b) => a.ts - b.ts) : [];
         callback(this._cache);
       } catch(e) { console.log('DB poll error', e); }
     };
@@ -345,10 +310,7 @@ let uPick = null;
 function enter(role) {
   if (role === 'professor') {
     const pwd = prompt('Enter professor password:');
-    if (pwd !== '2026') {
-      if (pwd !== null) alert('Incorrect password. Access denied.');
-      return;
-    }
+    if (pwd !== '2026') { if (pwd !== null) alert('Incorrect password. Access denied.'); return; }
   }
   document.getElementById('role-screen').style.display = 'none';
   document.getElementById(role+'-app').classList.add('active');
@@ -358,27 +320,26 @@ function goHome() {
   document.querySelectorAll('.app').forEach(a => a.classList.remove('active'));
   document.getElementById('role-screen').style.display = 'flex';
 }
-
 function pickU(el, val, cls) {
   document.querySelectorAll('.u-btn').forEach(b => b.classList.remove('sg','sa','sr'));
   el.classList.add(cls);
   uPick = val;
 }
-
 async function submitStudent() {
   const q = document.getElementById('qi').value.trim();
   if (!uPick && !q) { document.getElementById('qi').focus(); return; }
   const btn = document.getElementById('sbtn');
   const toast = document.getElementById('toast');
   btn.disabled = true; btn.textContent = 'Sending…';
-  await DB.push({ u: uPick || 'partial', q, ts: Date.now() });
+  const name = document.getElementById('qi-name').value.trim();
+  await DB.push({ u: uPick || 'partial', q, name, ts: Date.now() });
   btn.textContent = 'Sent ✓';
   toast.classList.add('show');
   if (q) {
     const f = document.getElementById('flist');
     const d = document.createElement('div');
     d.className = 'fi '+(uPick||'partial');
-    d.innerHTML = esc(q)+'<div class="fi-time">Just now · Anonymous</div>';
+    d.innerHTML = esc(q)+'<div class="fi-time">Just now · '+esc(name||'Anonymous')+'</div>';
     f.insertBefore(d, f.firstChild);
     document.getElementById('fct').textContent = f.children.length;
   }
@@ -386,30 +347,21 @@ async function submitStudent() {
     btn.disabled = false; btn.textContent = 'Send Feedback';
     toast.classList.remove('show');
     document.getElementById('qi').value = '';
+    document.getElementById('qi-name').value = '';
     document.querySelectorAll('.u-btn').forEach(b => b.classList.remove('sg','sa','sr'));
     uPick = null;
   }, 2800);
 }
 
-// ── Trend data: snapshot every time refreshDash runs with data ──
 const TREND_KEY = 'classpulse_trend';
-function getTrend() {
-  try { return JSON.parse(localStorage.getItem(TREND_KEY) || '[]'); } catch(e) { return []; }
-}
+function getTrend() { try { return JSON.parse(localStorage.getItem(TREND_KEY)||'[]'); } catch(e) { return []; } }
 function saveTrend(snap) {
   const arr = getTrend();
-  // Only save if last snapshot was >30s ago
-  if (arr.length && Date.now() - arr[arr.length-1].ts < 30000) {
-    arr[arr.length-1] = snap; // update last point
-  } else {
-    arr.push(snap);
-  }
-  // Keep last 20 points
+  if (arr.length && Date.now() - arr[arr.length-1].ts < 30000) { arr[arr.length-1] = snap; } else { arr.push(snap); }
   if (arr.length > 20) arr.splice(0, arr.length - 20);
   localStorage.setItem(TREND_KEY, JSON.stringify(arr));
 }
 function clearTrend() { localStorage.removeItem(TREND_KEY); }
-
 function drawTrend() {
   const canvas = document.getElementById('trend-canvas');
   const emptyEl = document.getElementById('trend-empty');
@@ -417,309 +369,133 @@ function drawTrend() {
   const data = getTrend();
   if (data.length < 2) { emptyEl.style.display='block'; return; }
   emptyEl.style.display = 'none';
-
-  const dpr = window.devicePixelRatio || 1;
+  const dpr = window.devicePixelRatio||1;
   const rect = canvas.parentElement.getBoundingClientRect();
-  const W = rect.width || 260, H = rect.height || 90;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const W = rect.width||260, H = rect.height||90;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-
-  const pad = { t: 10, r: 10, b: 18, l: 28 };
-  const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-
-  // Background
-  ctx.fillStyle = '#F9F9FB'; ctx.fillRect(0, 0, W, H);
-
-  // Grid lines at 0%, 50%, 100%
-  ctx.strokeStyle = '#E8EAF0'; ctx.lineWidth = 1;
-  [0, 0.5, 1].forEach(v => {
-    const y = pad.t + ch * (1 - v);
-    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
-    ctx.fillStyle = '#AEAEB2'; ctx.font = '9px Inter, sans-serif';
-    ctx.textAlign = 'right'; ctx.fillText(Math.round(v*100)+'%', pad.l - 4, y + 3);
+  const pad = {t:10,r:10,b:18,l:28};
+  const cw = W-pad.l-pad.r, ch = H-pad.t-pad.b;
+  ctx.fillStyle='#F9F9FB'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#E8EAF0'; ctx.lineWidth=1;
+  [0,0.5,1].forEach(v => {
+    const y = pad.t+ch*(1-v);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#AEAEB2'; ctx.font='9px Inter,sans-serif';
+    ctx.textAlign='right'; ctx.fillText(Math.round(v*100)+'%',pad.l-4,y+3);
   });
-
-  // Draw lines for each series
-  const series = [
-    { key: 'gp', color: '#16A34A' },
-    { key: 'pp', color: '#D97706' },
-    { key: 'lp', color: '#DC2626' },
-  ];
-
-  series.forEach(({ key, color }) => {
-    ctx.beginPath();
-    ctx.strokeStyle = color; ctx.lineWidth = 2;
-    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-    data.forEach((d, i) => {
-      const x = pad.l + (i / (data.length - 1)) * cw;
-      const y = pad.t + ch * (1 - d[key] / 100);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    });
+  [{key:'gp',color:'#16A34A'},{key:'pp',color:'#D97706'},{key:'lp',color:'#DC2626'}].forEach(({key,color}) => {
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+    data.forEach((d,i) => { const x=pad.l+(i/(data.length-1))*cw, y=pad.t+ch*(1-d[key]/100); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
     ctx.stroke();
-
-    // Dot at last point
-    const last = data[data.length - 1];
-    const lx = pad.l + cw, ly = pad.t + ch * (1 - last[key] / 100);
-    ctx.beginPath(); ctx.arc(lx, ly, 3, 0, Math.PI*2);
-    ctx.fillStyle = color; ctx.fill();
+    const last=data[data.length-1], lx=pad.l+cw, ly=pad.t+ch*(1-last[key]/100);
+    ctx.beginPath(); ctx.arc(lx,ly,3,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
   });
-
-  // Time labels: first and last
-  ctx.fillStyle = '#AEAEB2'; ctx.font = '9px Inter, sans-serif'; ctx.textAlign = 'center';
-  if (data.length >= 2) {
-    ctx.fillText(fmtTime(data[0].ts), pad.l, H - 2);
-    ctx.fillText(fmtTime(data[data.length-1].ts), pad.l + cw, H - 2);
-  }
+  ctx.fillStyle='#AEAEB2'; ctx.font='9px Inter,sans-serif'; ctx.textAlign='center';
+  ctx.fillText(fmtTime(data[0].ts),pad.l,H-2);
+  ctx.fillText(fmtTime(data[data.length-1].ts),pad.l+cw,H-2);
 }
-
-function fmtTime(ts) {
-  const d = new Date(ts);
-  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-}
+function fmtTime(ts) { const d=new Date(ts); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0'); }
 
 function refreshDash() {
-  const s = DB.subs, n = s.length;
-  const got = s.filter(x=>x.u==='got').length;
-  const par = s.filter(x=>x.u==='partial').length;
-  const los = s.filter(x=>x.u==='lost').length;
-  const qs  = s.filter(x=>x.q);
-  document.getElementById('sttl').textContent = n;
-  document.getElementById('stqs').textContent = qs.length;
-  if (n > 0) {
+  const s=DB.subs, n=s.length;
+  const got=s.filter(x=>x.u==='got').length, par=s.filter(x=>x.u==='partial').length, los=s.filter(x=>x.u==='lost').length;
+  const qs=s.filter(x=>x.q);
+  document.getElementById('sttl').textContent=n;
+  document.getElementById('stqs').textContent=qs.length;
+  if (n>0) {
     const gp=Math.round(got/n*100), pp=Math.round(par/n*100), lp=100-gp-pp;
-    // bars
     document.getElementById('vg-bar').style.width=gp+'%';
     document.getElementById('vp-bar').style.width=pp+'%';
     document.getElementById('vl-bar').style.width=lp+'%';
     document.getElementById('vg').textContent=gp+'%';
     document.getElementById('vp').textContent=pp+'%';
     document.getElementById('vl').textContent=lp+'%';
-    // big score: weighted (got=100, partial=50, lost=0)
-    const score = Math.round((got*100 + par*50) / n);
-    const el = document.getElementById('pulse-score');
-    const lbl = document.getElementById('pulse-label');
-    const emoji = document.getElementById('pulse-emoji');
-    el.textContent = score + '%';
-    if (score >= 70) {
-      el.style.color='var(--green)'; lbl.style.color='var(--green)';
-      lbl.textContent='Class is following well'; emoji.textContent='✅';
-    } else if (score >= 40) {
-      el.style.color='var(--amber)'; lbl.style.color='var(--amber)';
-      lbl.textContent='Some confusion — consider pausing'; emoji.textContent='🤔';
-    } else {
-      el.style.color='var(--red)'; lbl.style.color='var(--red)';
-      lbl.textContent='Class needs help — slow down'; emoji.textContent='🆘';
-    }
-    // Save trend snapshot and redraw chart
-    saveTrend({ ts: Date.now(), gp, pp, lp });
-    drawTrend();
-  } else {
-    drawTrend();
-  }
-  const cl = document.getElementById('qlist');
-  if (!qs.length) {
-    cl.innerHTML='<div class="empty-st"><div class="empty-ic">💬</div>No questions yet — waiting for students.</div>';
-  } else {
-    // Group similar questions but show ALL of them
-    const groups = groupQuestions(qs);
-    cl.innerHTML = groups.map(g => {
-      const subs = g.items.map(item => `
-        <div style="padding:10px 14px;background:var(--bg);border-radius:8px;margin-top:8px;font-size:13px;color:var(--ink2);line-height:1.5;border-left:3px solid ${item.u==='lost'?'var(--red)':item.u==='got'?'var(--green)':'var(--amber)'};">
-          ${esc(item.q)}
-          <div style="font-size:11px;color:var(--ink3);margin-top:4px;">${ago(item.ts)} · Anonymous</div>
-        </div>`).join('');
-      return `
-      <div class="qg" style="margin-bottom:12px;">
-        <div class="qg-top">
-          <div class="qg-text">${esc(g.items[0].q)}</div>
-          <div class="qc ${g.items.length>=2?'hot':''}">${g.items.length > 1 ? g.items.length+' similar' : '×1'}</div>
-        </div>
-        ${g.items.length > 1 ? subs : ''}
-        <div class="qg-sub">${ago(g.items[0].ts)} · Anonymous</div>
-      </div>`;
-    }).join('');
-  }
+    const score=Math.round((got*100+par*50)/n);
+    const el=document.getElementById('pulse-score'), lbl=document.getElementById('pulse-label'), emoji=document.getElementById('pulse-emoji');
+    el.textContent=score+'%';
+    if (score>=70) { el.style.color='var(--green)'; lbl.style.color='var(--green)'; lbl.textContent='Class is following well'; emoji.textContent='✅'; }
+    else if (score>=40) { el.style.color='var(--amber)'; lbl.style.color='var(--amber)'; lbl.textContent='Some confusion — consider pausing'; emoji.textContent='🤔'; }
+    else { el.style.color='var(--red)'; lbl.style.color='var(--red)'; lbl.textContent='Class needs help — slow down'; emoji.textContent='🆘'; }
+    saveTrend({ts:Date.now(),gp,pp,lp}); drawTrend();
+  } else { drawTrend(); }
+  const cl=document.getElementById('qlist');
+  if (!qs.length) { cl.innerHTML='<div class="empty-st"><div class="empty-ic">💬</div>No questions yet — waiting for students.</div>'; return; }
+  const groups=groupQuestions(qs);
+  cl.innerHTML=groups.map(g => {
+    const subs=g.items.map(item=>`<div style="padding:10px 14px;background:var(--bg);border-radius:8px;margin-top:8px;font-size:13px;color:var(--ink2);line-height:1.5;border-left:3px solid ${item.u==='lost'?'var(--red)':item.u==='got'?'var(--green)':'var(--amber)'};">${esc(item.q)}<div style="font-size:11px;color:var(--ink3);margin-top:4px;">${ago(item.ts)} · ${item.name?'<strong>'+esc(item.name)+'</strong>':'Anonymous'}</div></div>`).join('');
+    return `<div class="qg" style="margin-bottom:12px;"><div class="qg-top"><div class="qg-text">${esc(g.items[0].q)}</div><div class="qc ${g.items.length>=2?'hot':''}">${g.items.length>1?g.items.length+' similar':'×1'}</div></div>${g.items.length>1?subs:''}<div class="qg-sub">${ago(g.items[0].ts)} · ${g.items[0].name?'<strong>'+esc(g.items[0].name)+'</strong>':'Anonymous'}</div></div>`;
+  }).join('');
 }
-
 function groupQuestions(qs) {
-  // Group similar questions, but keep ALL items for display
-  const result = [];
-  const used = new Set();
-  qs.forEach((a, i) => {
+  const result=[], used=new Set();
+  qs.forEach((a,i) => {
     if (used.has(i)) return;
-    const items = [a];
-    const aWords = new Set(a.q.toLowerCase().split(/\W+/).filter(w=>w.length>4));
-    qs.forEach((b, j) => {
-      if (j <= i || used.has(j)) return;
-      const bWords = b.q.toLowerCase().split(/\W+/).filter(w=>w.length>4);
-      const overlap = bWords.filter(w=>aWords.has(w)).length;
-      if (overlap >= 1) { items.push(b); used.add(j); }
-    });
-    used.add(i);
-    result.push({ items, ts: a.ts });
+    const items=[a], aWords=new Set(a.q.toLowerCase().split(/\W+/).filter(w=>w.length>4));
+    qs.forEach((b,j) => { if (j<=i||used.has(j)) return; const bWords=b.q.toLowerCase().split(/\W+/).filter(w=>w.length>4); if (bWords.filter(w=>aWords.has(w)).length>=1) { items.push(b); used.add(j); } });
+    used.add(i); result.push({items,ts:a.ts});
   });
-  // Sort: groups with most questions first, then by time
-  return result.sort((a,b) => b.items.length - a.items.length || a.ts - b.ts);
+  return result.sort((a,b)=>b.items.length-a.items.length||a.ts-b.ts);
 }
-
 async function runAI() {
-  const btn = document.getElementById('aibtn');
-  btn.disabled = true; btn.classList.add('loading');
-  document.getElementById('aibtntxt').textContent = 'Analyzing…';
-
-  const s = DB.subs, n = s.length;
-  const got = s.filter(x=>x.u==='got').length;
-  const par = s.filter(x=>x.u==='partial').length;
-  const los = s.filter(x=>x.u==='lost').length;
-  const qs = s.filter(x=>x.q).map(x=>`• "${x.q}"`).join('\n');
-
-  const prompt = `You are an AI teaching assistant helping a professor in a live lecture.
-
-STUDENT FEEDBACK (${n} responses):
-- Got it (understand well): ${got} students (${Math.round(got/n*100)}%)
-- Partially understand: ${par} students (${Math.round(par/n*100)}%)
-- Lost / confused: ${los} students (${Math.round(los/n*100)}%)
-
-ANONYMOUS STUDENT QUESTIONS:
-${qs || '(no questions submitted)'}
-
-Provide exactly four sections with these exact headers:
-
-UNDERSTANDING RATING
-One direct sentence on the overall comprehension level of the class right now.
-
-COMMON QUESTION THEMES
-2-3 bullet points summarizing the main themes in the questions. Be specific about what concepts are unclear.
-
-TOPICS TO RE-EXPLAIN
-1-2 specific concepts or topics the professor should revisit. Reference actual content from the questions.
-
-IMMEDIATE ACTION
-One specific, actionable instruction for the professor to do in the next 2 minutes. Be concrete.
-
-Be direct, brief, and practical.`;
-
+  const btn=document.getElementById('aibtn');
+  btn.disabled=true; btn.classList.add('loading');
+  document.getElementById('aibtntxt').textContent='Analyzing…';
+  const s=DB.subs, n=s.length;
+  const got=s.filter(x=>x.u==='got').length, par=s.filter(x=>x.u==='partial').length, los=s.filter(x=>x.u==='lost').length;
+  const qs=s.filter(x=>x.q).map(x=>`• "${x.q}"`).join('\n');
+  const prompt=`You are an AI teaching assistant helping a professor in a live lecture.\n\nSTUDENT FEEDBACK (${n} responses):\n- Got it: ${got} (${Math.round(got/n*100)}%)\n- Partially: ${par} (${Math.round(par/n*100)}%)\n- Lost: ${los} (${Math.round(los/n*100)}%)\n\nQUESTIONS:\n${qs||'(none)'}\n\nProvide exactly four sections:\n\nUNDERSTANDING RATING\nOne sentence on overall comprehension.\n\nCOMMON QUESTION THEMES\n2-3 bullet points on main themes.\n\nTOPICS TO RE-EXPLAIN\n1-2 specific concepts to revisit.\n\nIMMEDIATE ACTION\nOne concrete instruction for the next 2 minutes.`;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    renderAI(data.content?.[0]?.text || '');
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    renderAI(data.content?.[0]?.text||'');
   } catch(e) {
-    document.getElementById('aiempty').style.display = 'block';
-    document.getElementById('aiempty').textContent = 'Not enough data to support analysis yet. Ask students to submit more responses first.';
-    document.getElementById('aiout').style.display = 'none';
+    document.getElementById('aiempty').style.display='block';
+    document.getElementById('aiempty').textContent='Not enough data to support analysis yet. Ask students to submit more responses first.';
+    document.getElementById('aiout').style.display='none';
   }
-
-  btn.disabled = false; btn.classList.remove('loading');
-  document.getElementById('aibtntxt').textContent = 'Refresh AI Insight';
+  btn.disabled=false; btn.classList.remove('loading');
+  document.getElementById('aibtntxt').textContent='Refresh AI Insight';
   refreshDash();
 }
-
 function renderAI(text) {
-  document.getElementById('aiempty').style.display = 'none';
-  const el = document.getElementById('aiout');
-  el.style.display = 'block';
-
-  const secs = [
-    { h: 'UNDERSTANDING RATING', icon: '📊' },
-    { h: 'COMMON QUESTION THEMES', icon: '💬' },
-    { h: 'TOPICS TO RE-EXPLAIN', icon: '🔁' },
-    { h: 'IMMEDIATE ACTION', icon: '⚡', action: true },
-  ];
-
-  let html = '';
-  secs.forEach((sec, i) => {
-    const start = text.indexOf(sec.h);
-    if (start === -1) return;
-    const nextH = secs[i+1] ? text.indexOf(secs[i+1].h) : text.length;
-    const body = text.slice(start + sec.h.length, nextH > -1 ? nextH : text.length).trim();
-
-    if (sec.action) {
-      html += `<div class="ai-action"><strong>⚡ IMMEDIATE ACTION</strong>${esc(body)}</div>`;
-    } else {
-      html += `<span class="sec-hd">${sec.icon} ${sec.h}</span>`;
-      const lines = body.split('\n').filter(l=>l.trim());
-      html += `<div style="margin-bottom:14px;">${lines.map(l =>
-        `<div style="margin-bottom:5px;">${esc(l.replace(/^[•\-]\s*/,'').replace(/^\d+\.\s*/,''))}</div>`
-      ).join('')}</div>`;
-    }
+  document.getElementById('aiempty').style.display='none';
+  const el=document.getElementById('aiout'); el.style.display='block';
+  const secs=[{h:'UNDERSTANDING RATING',icon:'📊'},{h:'COMMON QUESTION THEMES',icon:'💬'},{h:'TOPICS TO RE-EXPLAIN',icon:'🔁'},{h:'IMMEDIATE ACTION',icon:'⚡',action:true}];
+  let html='';
+  secs.forEach((sec,i) => {
+    const start=text.indexOf(sec.h); if (start===-1) return;
+    const nextH=secs[i+1]?text.indexOf(secs[i+1].h):text.length;
+    const body=text.slice(start+sec.h.length,nextH>-1?nextH:text.length).trim();
+    if (sec.action) { html+=`<div class="ai-action"><strong>⚡ IMMEDIATE ACTION</strong>${esc(body)}</div>`; }
+    else { html+=`<span class="sec-hd">${sec.icon} ${sec.h}</span><div style="margin-bottom:14px;">${body.split('\n').filter(l=>l.trim()).map(l=>`<div style="margin-bottom:5px;">${esc(l.replace(/^[•\-]\s*/,'').replace(/^\d+\.\s*/,''))}</div>`).join('')}</div>`; }
   });
-
-  el.innerHTML = html || esc(text);
+  el.innerHTML=html||esc(text);
 }
-
-async function loadDemo() {
-  const demo = [
-    { u:'lost',    q:"What is the difference between competitive advantage and comparative advantage?", ts:Date.now()-180000 },
-    { u:'partial', q:"Can you give a real-world example of the Blue Ocean strategy?", ts:Date.now()-120000 },
-    { u:'lost',    q:"How does Porter's Five Forces apply to digital platform markets?", ts:Date.now()-90000 },
-    { u:'partial', q:"How do we actually calculate market share in practice?", ts:Date.now()-60000 },
-    { u:'got',     q:"", ts:Date.now()-45000 },
-    { u:'got',     q:"", ts:Date.now()-30000 },
-    { u:'partial', q:"", ts:Date.now()-15000 },
-    { u:'lost',    q:"", ts:Date.now()-8000 },
-    { u:'got',     q:"", ts:Date.now()-3000 },
-  ];
-  // Load demo data directly into Firebase
-  for (const d of demo) { await DB.push(d); }
-  demo.filter(s=>s.q).forEach(s=>{
-    const f=document.getElementById('flist');
-    const d=document.createElement('div');
-    d.className='fi '+s.u;
-    d.innerHTML=esc(s.q)+'<div class="fi-time">'+ago(s.ts)+' · Anonymous</div>';
-    f.appendChild(d);
-  });
-  document.getElementById('fct').textContent=demo.filter(s=>s.q).length;
-}
-
 async function clearSession() {
   if (confirm('Clear all student responses? This cannot be undone.')) {
-    await DB.clear();
-    clearTrend();
-    refreshDash();
-    document.getElementById('aiempty').style.display = 'block';
-    document.getElementById('aiout').style.display = 'none';
-    document.getElementById('aibtntxt').textContent = 'Generate AI Insight';
+    await DB.clear(); clearTrend(); refreshDash();
+    document.getElementById('aiempty').style.display='block';
+    document.getElementById('aiout').style.display='none';
+    document.getElementById('aibtntxt').textContent='Generate AI Insight';
   }
 }
-
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function ago(ts){
-  const s=Math.floor((Date.now()-ts)/1000);
-  if(s<60) return 'Just now';
-  if(s<3600) return Math.floor(s/60)+' min ago';
-  return Math.floor(s/3600)+'h ago';
-}
+function ago(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'Just now';if(s<3600)return Math.floor(s/60)+' min ago';return Math.floor(s/3600)+'h ago';}
 
-// ── Real-time sync via Firebase polling ──
 DB.listen((subs) => {
-  // Update student feed
-  const qs = subs.filter(s => s.q);
-  const f = document.getElementById('flist');
-  f.innerHTML = '';
+  const qs=subs.filter(s=>s.q);
+  const f=document.getElementById('flist'); f.innerHTML='';
   qs.slice().reverse().forEach(s => {
-    const d = document.createElement('div');
-    d.className = 'fi ' + s.u;
-    d.innerHTML = esc(s.q) + '<div class="fi-time">' + ago(s.ts) + ' · Anonymous</div>';
+    const d=document.createElement('div'); d.className='fi '+s.u;
+    d.innerHTML=esc(s.q)+'<div class="fi-time">'+ago(s.ts)+' · '+(s.name?'<strong>'+esc(s.name)+'</strong>':'Anonymous')+'</div>';
     f.appendChild(d);
   });
-  if (qs.length) document.getElementById('fct').textContent = qs.length;
-
-  // Update professor dashboard if open
-  if (document.getElementById('professor-app').classList.contains('active')) {
-    refreshDash();
-  }
+  if (qs.length) document.getElementById('fct').textContent=qs.length;
+  if (document.getElementById('professor-app').classList.contains('active')) refreshDash();
 });
 </script>
 </body>
 </html>
-
